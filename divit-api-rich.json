@@ -3,7 +3,7 @@
   "info": {
     "title": "divit-api",
     "version": "1.0",
-    "description": "APIs of Divit Pay-later service for merchant",
+    "description": "# divit API documentation\n\n![Divit](https://divit.com.hk/wp-content/uploads/2021/07/DivitLogo_Colour_Negative_RGB_150dpi.png)\n\nWe are very excited to that you are showing intrest in joining the divit family! This is the place where you will find all information needed to get started to use Divit as your payment provider.\n\nWe have worked very hard to make this as simple as possible for you as a developer. To get started right away, choose what product you want to integrate with first on the sidebar and then start with the Quickstart and you should be up and running in no time.\n\n",
     "contact": {
       "name": "Support",
       "email": "support@divit.com.hk"
@@ -22,7 +22,7 @@
   "paths": {
     "/orders": {
       "post": {
-        "summary": "NewOrder",
+        "summary": "Create new order",
         "operationId": "post-orders",
         "responses": {
           "200": {
@@ -57,7 +57,7 @@
             }
           }
         },
-        "description": "Create order on Divit",
+        "description": "To start the divit journey for your customer, you need to create an order with divit so we know what the customer is expected to pay and what type of product the customer is buying.\n\n",
         "security": [
           {
             "JWT": []
