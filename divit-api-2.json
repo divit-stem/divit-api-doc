@@ -215,10 +215,7 @@
                       "properties": {
                         "OrderType": {
                           "type": "string",
-                          "enum": [
-                            "flight",
-                            "retail"
-                          ]
+                          "minLength": 1
                         },
                         "OrderData": {
                           "oneOf": [
@@ -346,7 +343,10 @@
                           ],
                           "type": "object"
                         }
-                      }
+                      },
+                      "required": [
+                        "OrderType"
+                      ]
                     }
                   }
                 },
@@ -408,37 +408,6 @@
                       }
                     ]
                   }
-                },
-                "Online Merchant": {
-                  "value": {
-                    "merchantRef": "P000232-3420",
-                    "totalAmount": {
-                      "amount": 320000,
-                      "currency": "HKD"
-                    },
-                    "nonrefundableAmount": {
-                      "amount": 270000,
-                      "currency": "HKD"
-                    },
-                    "refundableAmount": {
-                      "amount": 50000,
-                      "currency": "HKD"
-                    },
-                    "webhookSuccess": "https://success",
-                    "webhookFailure": "https://failure",
-                    "webhookEvents": "https://event",
-                    "expiredAt": 0,
-                    "orderItems": [
-                      {
-                        "itemType": "retail",
-                        "itemData": {
-                          "productID": "PD0329A",
-                          "productTitle": "title",
-                          "qty": 1
-                        }
-                      }
-                    ]
-                  }
                 }
               }
             }
@@ -448,31 +417,31 @@
         "x-codeSamples": [
           {
             "lang": "Node + Request",
-            "source": "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://dev-api.divit.dev/orders',\n  headers: {\n    'content-type': 'application/json',\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  },\n  body: {\n    totalAmount: {amount: 0, currency: 'string'},\n    nonrefundableAmount: {amount: 0, currency: 'string'},\n    refundableAmount: {amount: 0, currency: 'string'},\n    orderType: 'retail',\n    orderItems: [\n      {\n        OrderType: 'string',\n        OrderData: {productID: 'string', productTitle: 'string', qty: 0, pics: {}}\n      }\n    ],\n    webhook_success: 'string',\n    webhook_failure: 'string',\n    webhook_events: 'string',\n    expiredAt: 0,\n    partnerRef: 'string'\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+            "source": "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://sandbox-api.divit.dev/orders',\n  headers: {\n    'content-type': 'application/json',\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  },\n  body: {\n    totalAmount: {amount: 0, currency: 'string'},\n    nonrefundableAmount: {amount: 0, currency: 'string'},\n    refundableAmount: {amount: 0, currency: 'string'},\n    webhook_success: 'string',\n    webhook_failure: 'string',\n    webhook_events: 'string',\n    partnerRef: 'string',\n    OrderItems: [\n      {\n        OrderType: 'string',\n        OrderData: {\n          departure: {iataCode: 'string', terminal: 'string', at: 'string'},\n          arrival: {iataCode: 'string', at: 'string'},\n          carrierCode: 'string',\n          number: 'string',\n          aircraft: {code: 'string'},\n          operating: {carrierCode: 'string'},\n          duration: 'string',\n          id: 'string',\n          numberOfStops: 0,\n          '': 'string'\n        }\n      }\n    ]\n  },\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
           },
           {
             "lang": "Shell + Curl",
-            "source": "curl --request POST \\\n  --url https://dev-api.divit.dev/orders \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"totalAmount\":{\"amount\":0,\"currency\":\"string\"},\"nonrefundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"refundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"orderType\":\"retail\",\"orderItems\":[{\"OrderType\":\"string\",\"OrderData\":{\"productID\":\"string\",\"productTitle\":\"string\",\"qty\":0,\"pics\":{}}}],\"webhook_success\":\"string\",\"webhook_failure\":\"string\",\"webhook_events\":\"string\",\"expiredAt\":0,\"partnerRef\":\"string\"}'"
+            "source": "curl --request POST \\\n  --url https://sandbox-api.divit.dev/orders \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"totalAmount\":{\"amount\":0,\"currency\":\"string\"},\"nonrefundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"refundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"webhook_success\":\"string\",\"webhook_failure\":\"string\",\"webhook_events\":\"string\",\"partnerRef\":\"string\",\"OrderItems\":[{\"OrderType\":\"string\",\"OrderData\":{\"departure\":{\"iataCode\":\"string\",\"terminal\":\"string\",\"at\":\"string\"},\"arrival\":{\"iataCode\":\"string\",\"at\":\"string\"},\"carrierCode\":\"string\",\"number\":\"string\",\"aircraft\":{\"code\":\"string\"},\"operating\":{\"carrierCode\":\"string\"},\"duration\":\"string\",\"id\":\"string\",\"numberOfStops\":0,\"\":\"string\"}}]}'"
           },
           {
             "lang": "Shell + Httpie",
-            "source": "echo '{\"totalAmount\":{\"amount\":0,\"currency\":\"string\"},\"nonrefundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"refundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"orderType\":\"retail\",\"orderItems\":[{\"OrderType\":\"string\",\"OrderData\":{\"productID\":\"string\",\"productTitle\":\"string\",\"qty\":0,\"pics\":{}}}],\"webhook_success\":\"string\",\"webhook_failure\":\"string\",\"webhook_events\":\"string\",\"expiredAt\":0,\"partnerRef\":\"string\"}' |  \\\n  http POST https://dev-api.divit.dev/orders \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json"
+            "source": "echo '{\"totalAmount\":{\"amount\":0,\"currency\":\"string\"},\"nonrefundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"refundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"webhook_success\":\"string\",\"webhook_failure\":\"string\",\"webhook_events\":\"string\",\"partnerRef\":\"string\",\"OrderItems\":[{\"OrderType\":\"string\",\"OrderData\":{\"departure\":{\"iataCode\":\"string\",\"terminal\":\"string\",\"at\":\"string\"},\"arrival\":{\"iataCode\":\"string\",\"at\":\"string\"},\"carrierCode\":\"string\",\"number\":\"string\",\"aircraft\":{\"code\":\"string\"},\"operating\":{\"carrierCode\":\"string\"},\"duration\":\"string\",\"id\":\"string\",\"numberOfStops\":0,\"\":\"string\"}}]}' |  \\\n  http POST https://sandbox-api.divit.dev/orders \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json"
           },
           {
             "lang": "Python + Python3",
-            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"dev-api.divit.dev\")\n\npayload = \"{\\\"totalAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"nonrefundableAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"refundableAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"orderType\\\":\\\"retail\\\",\\\"orderItems\\\":[{\\\"OrderType\\\":\\\"string\\\",\\\"OrderData\\\":{\\\"productID\\\":\\\"string\\\",\\\"productTitle\\\":\\\"string\\\",\\\"qty\\\":0,\\\"pics\\\":{}}}],\\\"webhook_success\\\":\\\"string\\\",\\\"webhook_failure\\\":\\\"string\\\",\\\"webhook_events\\\":\\\"string\\\",\\\"expiredAt\\\":0,\\\"partnerRef\\\":\\\"string\\\"}\"\n\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\", \"/orders\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"sandbox-api.divit.dev\")\n\npayload = \"{\\\"totalAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"nonrefundableAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"refundableAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"webhook_success\\\":\\\"string\\\",\\\"webhook_failure\\\":\\\"string\\\",\\\"webhook_events\\\":\\\"string\\\",\\\"partnerRef\\\":\\\"string\\\",\\\"OrderItems\\\":[{\\\"OrderType\\\":\\\"string\\\",\\\"OrderData\\\":{\\\"departure\\\":{\\\"iataCode\\\":\\\"string\\\",\\\"terminal\\\":\\\"string\\\",\\\"at\\\":\\\"string\\\"},\\\"arrival\\\":{\\\"iataCode\\\":\\\"string\\\",\\\"at\\\":\\\"string\\\"},\\\"carrierCode\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"aircraft\\\":{\\\"code\\\":\\\"string\\\"},\\\"operating\\\":{\\\"carrierCode\\\":\\\"string\\\"},\\\"duration\\\":\\\"string\\\",\\\"id\\\":\\\"string\\\",\\\"numberOfStops\\\":0,\\\"\\\":\\\"string\\\"}}]}\"\n\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\", \"/orders\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
           },
           {
             "lang": "Php + Curl",
-            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://dev-api.divit.dev/orders\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => \"{\\\"totalAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"nonrefundableAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"refundableAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"orderType\\\":\\\"retail\\\",\\\"orderItems\\\":[{\\\"OrderType\\\":\\\"string\\\",\\\"OrderData\\\":{\\\"productID\\\":\\\"string\\\",\\\"productTitle\\\":\\\"string\\\",\\\"qty\\\":0,\\\"pics\\\":{}}}],\\\"webhook_success\\\":\\\"string\\\",\\\"webhook_failure\\\":\\\"string\\\",\\\"webhook_events\\\":\\\"string\\\",\\\"expiredAt\\\":0,\\\"partnerRef\\\":\\\"string\\\"}\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://sandbox-api.divit.dev/orders\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => \"{\\\"totalAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"nonrefundableAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"refundableAmount\\\":{\\\"amount\\\":0,\\\"currency\\\":\\\"string\\\"},\\\"webhook_success\\\":\\\"string\\\",\\\"webhook_failure\\\":\\\"string\\\",\\\"webhook_events\\\":\\\"string\\\",\\\"partnerRef\\\":\\\"string\\\",\\\"OrderItems\\\":[{\\\"OrderType\\\":\\\"string\\\",\\\"OrderData\\\":{\\\"departure\\\":{\\\"iataCode\\\":\\\"string\\\",\\\"terminal\\\":\\\"string\\\",\\\"at\\\":\\\"string\\\"},\\\"arrival\\\":{\\\"iataCode\\\":\\\"string\\\",\\\"at\\\":\\\"string\\\"},\\\"carrierCode\\\":\\\"string\\\",\\\"number\\\":\\\"string\\\",\\\"aircraft\\\":{\\\"code\\\":\\\"string\\\"},\\\"operating\\\":{\\\"carrierCode\\\":\\\"string\\\"},\\\"duration\\\":\\\"string\\\",\\\"id\\\":\\\"string\\\",\\\"numberOfStops\\\":0,\\\"\\\":\\\"string\\\"}}]}\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
           },
           {
             "lang": "Php + Http1",
-            "source": "<?php\n\n$request = new HttpRequest();\n$request->setUrl('https://dev-api.divit.dev/orders');\n$request->setMethod(HTTP_METH_POST);\n\n$request->setHeaders([\n  'content-type' => 'application/json',\n  'Authorization' => 'Bearer REPLACE_BEARER_TOKEN'\n]);\n\n$request->setBody('{\"totalAmount\":{\"amount\":0,\"currency\":\"string\"},\"nonrefundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"refundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"orderType\":\"retail\",\"orderItems\":[{\"OrderType\":\"string\",\"OrderData\":{\"productID\":\"string\",\"productTitle\":\"string\",\"qty\":0,\"pics\":{}}}],\"webhook_success\":\"string\",\"webhook_failure\":\"string\",\"webhook_events\":\"string\",\"expiredAt\":0,\"partnerRef\":\"string\"}');\n\ntry {\n  $response = $request->send();\n\n  echo $response->getBody();\n} catch (HttpException $ex) {\n  echo $ex;\n}"
+            "source": "<?php\n\n$request = new HttpRequest();\n$request->setUrl('https://sandbox-api.divit.dev/orders');\n$request->setMethod(HTTP_METH_POST);\n\n$request->setHeaders([\n  'content-type' => 'application/json',\n  'Authorization' => 'Bearer REPLACE_BEARER_TOKEN'\n]);\n\n$request->setBody('{\"totalAmount\":{\"amount\":0,\"currency\":\"string\"},\"nonrefundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"refundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"webhook_success\":\"string\",\"webhook_failure\":\"string\",\"webhook_events\":\"string\",\"partnerRef\":\"string\",\"OrderItems\":[{\"OrderType\":\"string\",\"OrderData\":{\"departure\":{\"iataCode\":\"string\",\"terminal\":\"string\",\"at\":\"string\"},\"arrival\":{\"iataCode\":\"string\",\"at\":\"string\"},\"carrierCode\":\"string\",\"number\":\"string\",\"aircraft\":{\"code\":\"string\"},\"operating\":{\"carrierCode\":\"string\"},\"duration\":\"string\",\"id\":\"string\",\"numberOfStops\":0,\"\":\"string\"}}]}');\n\ntry {\n  $response = $request->send();\n\n  echo $response->getBody();\n} catch (HttpException $ex) {\n  echo $ex;\n}"
           },
           {
             "lang": "Php + Http2",
-            "source": "<?php\n\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n\n$body = new http\\Message\\Body;\n$body->append('{\"totalAmount\":{\"amount\":0,\"currency\":\"string\"},\"nonrefundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"refundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"orderType\":\"retail\",\"orderItems\":[{\"OrderType\":\"string\",\"OrderData\":{\"productID\":\"string\",\"productTitle\":\"string\",\"qty\":0,\"pics\":{}}}],\"webhook_success\":\"string\",\"webhook_failure\":\"string\",\"webhook_events\":\"string\",\"expiredAt\":0,\"partnerRef\":\"string\"}');\n\n$request->setRequestUrl('https://dev-api.divit.dev/orders');\n$request->setRequestMethod('POST');\n$request->setBody($body);\n\n$request->setHeaders([\n  'content-type' => 'application/json',\n  'Authorization' => 'Bearer REPLACE_BEARER_TOKEN'\n]);\n\n$client->enqueue($request)->send();\n$response = $client->getResponse();\n\necho $response->getBody();"
+            "source": "<?php\n\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n\n$body = new http\\Message\\Body;\n$body->append('{\"totalAmount\":{\"amount\":0,\"currency\":\"string\"},\"nonrefundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"refundableAmount\":{\"amount\":0,\"currency\":\"string\"},\"webhook_success\":\"string\",\"webhook_failure\":\"string\",\"webhook_events\":\"string\",\"partnerRef\":\"string\",\"OrderItems\":[{\"OrderType\":\"string\",\"OrderData\":{\"departure\":{\"iataCode\":\"string\",\"terminal\":\"string\",\"at\":\"string\"},\"arrival\":{\"iataCode\":\"string\",\"at\":\"string\"},\"carrierCode\":\"string\",\"number\":\"string\",\"aircraft\":{\"code\":\"string\"},\"operating\":{\"carrierCode\":\"string\"},\"duration\":\"string\",\"id\":\"string\",\"numberOfStops\":0,\"\":\"string\"}}]}');\n\n$request->setRequestUrl('https://sandbox-api.divit.dev/orders');\n$request->setRequestMethod('POST');\n$request->setBody($body);\n\n$request->setHeaders([\n  'content-type' => 'application/json',\n  'Authorization' => 'Bearer REPLACE_BEARER_TOKEN'\n]);\n\n$client->enqueue($request)->send();\n$response = $client->getResponse();\n\necho $response->getBody();"
           }
         ],
         "tags": [
@@ -581,7 +550,37 @@
           "PayNow",
           "Miles"
         ],
-        "parameters": []
+        "parameters": [],
+        "x-codeSamples": [
+          {
+            "lang": "Node + Request",
+            "source": "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://sandbox-api.divit.dev/login',\n  headers: {\n    'content-type': 'application/json',\n    Authorization: 'Bearer REPLACE_BEARER_TOKEN'\n  },\n  body: {client_id: 'string', client_secret: 'string'},\n  json: true\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+          },
+          {
+            "lang": "Shell + Curl",
+            "source": "curl --request POST \\\n  --url https://sandbox-api.divit.dev/login \\\n  --header 'Authorization: Bearer REPLACE_BEARER_TOKEN' \\\n  --header 'content-type: application/json' \\\n  --data '{\"client_id\":\"string\",\"client_secret\":\"string\"}'"
+          },
+          {
+            "lang": "Shell + Httpie",
+            "source": "echo '{\"client_id\":\"string\",\"client_secret\":\"string\"}' |  \\\n  http POST https://sandbox-api.divit.dev/login \\\n  Authorization:'Bearer REPLACE_BEARER_TOKEN' \\\n  content-type:application/json"
+          },
+          {
+            "lang": "Python + Python3",
+            "source": "import http.client\n\nconn = http.client.HTTPSConnection(\"sandbox-api.divit.dev\")\n\npayload = \"{\\\"client_id\\\":\\\"string\\\",\\\"client_secret\\\":\\\"string\\\"}\"\n\nheaders = {\n    'content-type': \"application/json\",\n    'Authorization': \"Bearer REPLACE_BEARER_TOKEN\"\n    }\n\nconn.request(\"POST\", \"/login\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+          },
+          {
+            "lang": "Php + Curl",
+            "source": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://sandbox-api.divit.dev/login\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => \"{\\\"client_id\\\":\\\"string\\\",\\\"client_secret\\\":\\\"string\\\"}\",\n  CURLOPT_HTTPHEADER => [\n    \"Authorization: Bearer REPLACE_BEARER_TOKEN\",\n    \"content-type: application/json\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+          },
+          {
+            "lang": "Php + Http1",
+            "source": "<?php\n\n$request = new HttpRequest();\n$request->setUrl('https://sandbox-api.divit.dev/login');\n$request->setMethod(HTTP_METH_POST);\n\n$request->setHeaders([\n  'content-type' => 'application/json',\n  'Authorization' => 'Bearer REPLACE_BEARER_TOKEN'\n]);\n\n$request->setBody('{\"client_id\":\"string\",\"client_secret\":\"string\"}');\n\ntry {\n  $response = $request->send();\n\n  echo $response->getBody();\n} catch (HttpException $ex) {\n  echo $ex;\n}"
+          },
+          {
+            "lang": "Php + Http2",
+            "source": "<?php\n\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n\n$body = new http\\Message\\Body;\n$body->append('{\"client_id\":\"string\",\"client_secret\":\"string\"}');\n\n$request->setRequestUrl('https://sandbox-api.divit.dev/login');\n$request->setRequestMethod('POST');\n$request->setBody($body);\n\n$request->setHeaders([\n  'content-type' => 'application/json',\n  'Authorization' => 'Bearer REPLACE_BEARER_TOKEN'\n]);\n\n$client->enqueue($request)->send();\n$response = $client->getResponse();\n\necho $response->getBody();"
+          }
+        ]
       }
     }
   },
